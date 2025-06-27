@@ -9,8 +9,18 @@ import os
 
 # flask app
 app = Flask(__name__)
-app.secret_key = 'your_secret_key_here'  # Change this in production
-DATABASE = 'users.db'
+
+# <<< MODIFIED FOR DEPLOYMENT >>>
+# Use an environment variable for the secret key for better security.
+# The second argument is a default value for local development.
+app.secret_key = os.getenv('SECRET_KEY', 'a_default_secret_key_for_local_dev')
+
+# <<< MODIFIED FOR DEPLOYMENT >>>
+# Use Render's persistent disk path for the database if available.
+# Otherwise, use the local directory ('.').
+DATA_DIR = os.getenv('RENDER_DISK_MOUNT_PATH', '.')
+DATABASE = os.path.join(DATA_DIR, 'users.db')
+
 ADMIN_EMAIL = 'admin@yourdomain.com'
 
 
@@ -201,6 +211,9 @@ def get_db():
     return db
 
 def init_db():
+    # Use a separate function to initialize to avoid running on every request
+    # This function should be called explicitly when needed, e.g., in a startup script
+    # or before the first request.
     with app.app_context():
         db = get_db()
         cursor = db.cursor()
@@ -401,8 +414,15 @@ def list_routes():
         output.append(line)
     return '<pre>' + '\n'.join(output) + '</pre>'
 
-# --- Initialize DB on every run ---
-init_db()
+# --- Initialize DB before the first request ---
+# This ensures the database and tables are created when the app starts.
+@app.before_first_request
+def setup_database():
+    init_db()
 
+
+# <<< NOTE FOR DEPLOYMENT >>>
+# The following block is for running the app on your local machine.
+# Render will use the 'gunicorn main:app' command instead of this.
 if __name__ == '__main__':
     app.run(debug=True)
