@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Prediction Results - Health Care Center</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .navbar {
+            background: rgba(255, 255, 255, 0.1) !important;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .navbar-brand { color: white !important; font-weight: 600; }
+        .nav-link { color: rgba(255, 255, 255, 0.9) !important; }
+        .nav-link:hover { color: white !important; }
+        .main-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: white;
+            text-align: center;
+            margin: 2rem 0 1rem 0;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        .results-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem auto;
+            color: white;
+            max-width: 900px;
+        }
+        .result-card {
+            background: rgba(255,255,255,0.12);
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            margin-bottom: 1.5rem;
+            padding: 1.5rem 1.2rem;
+        }
+        .result-card h4 {
+            font-weight: 700;
+            margin-bottom: 0.7rem;
+        }
+        .result-card ul {
+            margin-bottom: 0;
+        }
+        .back-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            margin: 2rem auto 0 auto;
+            display: block;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+            transition: all 0.3s ease;
+        }
+        .back-btn:hover {
+            background: linear-gradient(135deg, #764ba2, #667eea);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img class="myimg me-2" src="{{ url_for('static', filename='img.png') }}" alt="Logo" style="width:40px;height:40px;border-radius:20px;"> Health Center
+            </a>
+        </div>
+    </nav>
+    <h1 class="main-title"><i class="fas fa-chart-line me-2"></i>Prediction Results</h1>
+    <div class="results-container">
+        <div class="result-card">
+            <h4><i class="fas fa-disease me-2"></i>Disease</h4>
+            <p>{{ predicted_disease }}</p>
+        </div>
+        <div class="result-card">
+            <h4><i class="fas fa-info-circle me-2"></i>Description</h4>
+            <p>{{ dis_des }}</p>
+        </div>
+        <div class="result-card">
+            <h4><i class="fas fa-shield-alt me-2"></i>Precautions</h4>
+            <ul>
+                {% for i in my_precautions %}
+                    <li>{{ i }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="result-card">
+            <h4><i class="fas fa-pills me-2"></i>Medications</h4>
+            <ul>
+                {% for i in medications %}
+                    <li>{{ i }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="result-card">
+            <h4><i class="fas fa-dumbbell me-2"></i>Workouts</h4>
+            <ul>
+                {% for i in workout %}
+                    <li>{{ i }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="result-card">
+            <h4><i class="fas fa-apple-alt me-2"></i>Diets</h4>
+            <ul>
+                {% for i in my_diet %}
+                    <li>{{ i }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <a href="/" class="back-btn"><i class="fas fa-arrow-left me-2"></i>Back to Prediction</a>
+        {% if logged_in %}
+        <a href="/last_prediction" class="back-btn" style="margin-top: 1rem;"><i class="fas fa-history me-2"></i>View Last Prediction</a>
+        {% endif %}
+    </div>
+</body>
+</html> 

@@ -1,0 +1,818 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Health Care Center - AI Disease Prediction</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+
+  <style>
+    * {
+        font-family: 'Inter', sans-serif;
+    }
+
+    body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        position: relative;
+    }
+
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    .navbar {
+        background: rgba(255, 255, 255, 0.1) !important;
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-brand {
+        font-weight: 600;
+        font-size: 1.5rem;
+        color: white !important;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .nav-link {
+        color: rgba(255, 255, 255, 0.9) !important;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .nav-link:hover {
+        color: white !important;
+        transform: translateY(-2px);
+    }
+
+    .main-title {
+        font-size: 3.5rem;
+        font-weight: 900;
+        color: white;
+        text-align: center;
+        margin: 3rem 0;
+        text-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        letter-spacing: -0.03em;
+    }
+
+    .main-container {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        padding: 3rem;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        margin: 2rem 0;
+        transition: all 0.3s ease;
+        color: white;
+    }
+
+    .main-container:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+    }
+
+    .symptom-dropdown {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 12px;
+        color: white;
+        padding: 0.75rem 1rem;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    .symptom-dropdown:focus {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.5);
+        box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+        color: white;
+        outline: none;
+    }
+
+    .symptom-dropdown option {
+        background: #667eea;
+        color: white;
+    }
+
+    .selected-symptoms {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin: 1rem 0;
+        min-height: 50px;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .symptom-tag {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .symptom-tag:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .remove-symptom {
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.8rem;
+    }
+
+    .remove-symptom:hover {
+        background: rgba(255, 0, 0, 0.3);
+        transform: scale(1.1);
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border: none;
+        border-radius: 12px;
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        transition: all 0.3s ease;
+        margin: 0.5rem;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-success {
+        background: linear-gradient(135deg, #28a745, #20c997);
+        border: none;
+        border-radius: 12px;
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+        transition: all 0.3s ease;
+        margin: 0.5rem;
+    }
+
+    .btn-success:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(40, 167, 69, 0.4);
+    }
+
+    .btn-danger {
+        background: linear-gradient(135deg, #dc3545, #fd7e14);
+        border: none;
+        border-radius: 12px;
+        padding: 1rem 2rem;
+        font-weight: 600;
+        box-shadow: 0 8px 25px rgba(220, 53, 69, 0.3);
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-top: 1rem;
+    }
+
+    .btn-danger:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(220, 53, 69, 0.4);
+    }
+
+    .results-container {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        padding: 2rem;
+        margin: 2rem 0;
+        color: white;
+    }
+
+    .result-button {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
+        padding: 1rem 1.5rem;
+        margin: 0.5rem;
+        color: white;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .result-button:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        color: white;
+    }
+
+    .modal-content {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        border-radius: 20px;
+    }
+
+    .modal-header {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 20px 20px 0 0;
+    }
+
+    .modal-body {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 0 0 20px 20px;
+    }
+
+    .myimg {
+        width: 50px;
+        height: 50px;
+        border: 2px solid rgba(255,255,255,0.3);
+        border-radius: 25px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+
+    .myimg:hover {
+        transform: scale(1.1);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+
+    .speech-recognition {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
+        padding: 1rem;
+        margin: 1rem 0;
+        color: white;
+    }
+
+    .transcription {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
+        padding: 1rem;
+        margin: 1rem 0;
+        color: white;
+        min-height: 60px;
+    }
+
+    .error-message {
+        background: rgba(220, 53, 69, 0.2);
+        border: 1px solid rgba(220, 53, 69, 0.4);
+        border-radius: 12px;
+        padding: 1rem;
+        margin: 1rem 0;
+        color: #ff6b6b;
+    }
+
+    .success-message {
+        background: rgba(40, 167, 69, 0.2);
+        border: 1px solid rgba(40, 167, 69, 0.4);
+        border-radius: 12px;
+        padding: 1rem;
+        margin: 1rem 0;
+        color: #4ecdc4;
+    }
+  </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img class="myimg me-2" src="{{ url_for('static', filename='img.png') }}" alt="Logo">
+                Health Center
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/developer">Developer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/blog">Blog</a>
+                    </li>
+                    {% if not logged_in %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/register">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Login</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <span class="nav-link disabled">Hello, {{ user_name }}!</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/last_prediction">Last Prediction</a>
+                    </li>
+                    {% if is_admin %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin">Admin</a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    <div class="container mt-3">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ 'success' if category=='success' else 'danger' if category=='danger' else 'info' }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Main Title -->
+    <h1 class="main-title">AI Disease Prediction System</h1>
+
+    <div class="container">
+        <!-- Main Form -->
+        <div class="main-container">
+            <h2 class="text-center mb-4"><i class="fas fa-stethoscope me-2"></i>Select Your Symptoms</h2>
+            <p class="text-center mb-4">Choose your symptoms from the dropdown below. You can select multiple symptoms to get a more accurate prediction.</p>
+            
+            <form action="/predict" method="post">
+                <!-- Symptom Dropdown -->
+                <div class="form-group">
+                    <label for="symptomDropdown" class="form-label"><i class="fas fa-list me-2"></i>Add Symptom:</label>
+                    <select class="symptom-dropdown" id="symptomDropdown">
+                        <option value="">Select a symptom...</option>
+                        <option value="itching">Itching</option>
+                        <option value="skin_rash">Skin Rash</option>
+                        <option value="nodal_skin_eruptions">Nodal Skin Eruptions</option>
+                        <option value="continuous_sneezing">Continuous Sneezing</option>
+                        <option value="shivering">Shivering</option>
+                        <option value="chills">Chills</option>
+                        <option value="joint_pain">Joint Pain</option>
+                        <option value="stomach_pain">Stomach Pain</option>
+                        <option value="acidity">Acidity</option>
+                        <option value="ulcers_on_tongue">Ulcers on Tongue</option>
+                        <option value="muscle_wasting">Muscle Wasting</option>
+                        <option value="vomiting">Vomiting</option>
+                        <option value="burning_micturition">Burning Micturition</option>
+                        <option value="spotting_ urination">Spotting Urination</option>
+                        <option value="fatigue">Fatigue</option>
+                        <option value="weight_gain">Weight Gain</option>
+                        <option value="anxiety">Anxiety</option>
+                        <option value="cold_hands_and_feets">Cold Hands and Feet</option>
+                        <option value="mood_swings">Mood Swings</option>
+                        <option value="weight_loss">Weight Loss</option>
+                        <option value="restlessness">Restlessness</option>
+                        <option value="lethargy">Lethargy</option>
+                        <option value="patches_in_throat">Patches in Throat</option>
+                        <option value="irregular_sugar_level">Irregular Sugar Level</option>
+                        <option value="cough">Cough</option>
+                        <option value="high_fever">High Fever</option>
+                        <option value="sunken_eyes">Sunken Eyes</option>
+                        <option value="breathlessness">Breathlessness</option>
+                        <option value="sweating">Sweating</option>
+                        <option value="dehydration">Dehydration</option>
+                        <option value="indigestion">Indigestion</option>
+                        <option value="headache">Headache</option>
+                        <option value="yellowish_skin">Yellowish Skin</option>
+                        <option value="dark_urine">Dark Urine</option>
+                        <option value="nausea">Nausea</option>
+                        <option value="loss_of_appetite">Loss of Appetite</option>
+                        <option value="pain_behind_the_eyes">Pain Behind the Eyes</option>
+                        <option value="back_pain">Back Pain</option>
+                        <option value="constipation">Constipation</option>
+                        <option value="abdominal_pain">Abdominal Pain</option>
+                        <option value="diarrhoea">Diarrhoea</option>
+                        <option value="mild_fever">Mild Fever</option>
+                        <option value="yellow_urine">Yellow Urine</option>
+                        <option value="yellowing_of_eyes">Yellowing of Eyes</option>
+                        <option value="acute_liver_failure">Acute Liver Failure</option>
+                        <option value="fluid_overload">Fluid Overload</option>
+                        <option value="swelling_of_stomach">Swelling of Stomach</option>
+                        <option value="swelled_lymph_nodes">Swelled Lymph Nodes</option>
+                        <option value="malaise">Malaise</option>
+                        <option value="blurred_and_distorted_vision">Blurred and Distorted Vision</option>
+                        <option value="phlegm">Phlegm</option>
+                        <option value="throat_irritation">Throat Irritation</option>
+                        <option value="redness_of_eyes">Redness of Eyes</option>
+                        <option value="sinus_pressure">Sinus Pressure</option>
+                        <option value="runny_nose">Runny Nose</option>
+                        <option value="congestion">Congestion</option>
+                        <option value="chest_pain">Chest Pain</option>
+                        <option value="weakness_in_limbs">Weakness in Limbs</option>
+                        <option value="fast_heart_rate">Fast Heart Rate</option>
+                        <option value="pain_during_bowel_movements">Pain During Bowel Movements</option>
+                        <option value="pain_in_anal_region">Pain in Anal Region</option>
+                        <option value="bloody_stool">Bloody Stool</option>
+                        <option value="irritation_in_anus">Irritation in Anus</option>
+                        <option value="neck_pain">Neck Pain</option>
+                        <option value="dizziness">Dizziness</option>
+                        <option value="cramps">Cramps</option>
+                        <option value="bruising">Bruising</option>
+                        <option value="obesity">Obesity</option>
+                        <option value="swollen_legs">Swollen Legs</option>
+                        <option value="swollen_blood_vessels">Swollen Blood Vessels</option>
+                        <option value="puffy_face_and_eyes">Puffy Face and Eyes</option>
+                        <option value="enlarged_thyroid">Enlarged Thyroid</option>
+                        <option value="brittle_nails">Brittle Nails</option>
+                        <option value="swollen_extremeties">Swollen Extremities</option>
+                        <option value="excessive_hunger">Excessive Hunger</option>
+                        <option value="extra_marital_contacts">Extra Marital Contacts</option>
+                        <option value="drying_and_tingling_lips">Drying and Tingling Lips</option>
+                        <option value="slurred_speech">Slurred Speech</option>
+                        <option value="knee_pain">Knee Pain</option>
+                        <option value="hip_joint_pain">Hip Joint Pain</option>
+                        <option value="muscle_weakness">Muscle Weakness</option>
+                        <option value="stiff_neck">Stiff Neck</option>
+                        <option value="swelling_joints">Swelling Joints</option>
+                        <option value="movement_stiffness">Movement Stiffness</option>
+                        <option value="spinning_movements">Spinning Movements</option>
+                        <option value="loss_of_balance">Loss of Balance</option>
+                        <option value="unsteadiness">Unsteadiness</option>
+                        <option value="weakness_of_one_body_side">Weakness of One Body Side</option>
+                        <option value="loss_of_smell">Loss of Smell</option>
+                        <option value="bladder_discomfort">Bladder Discomfort</option>
+                        <option value="foul_smell_of urine">Foul Smell of Urine</option>
+                        <option value="continuous_feel_of_urine">Continuous Feel of Urine</option>
+                        <option value="passage_of_gases">Passage of Gases</option>
+                        <option value="internal_itching">Internal Itching</option>
+                        <option value="toxic_look_(typhos)">Toxic Look (Typhos)</option>
+                        <option value="depression">Depression</option>
+                        <option value="irritability">Irritability</option>
+                        <option value="muscle_pain">Muscle Pain</option>
+                        <option value="altered_sensorium">Altered Sensorium</option>
+                        <option value="red_spots_over_body">Red Spots Over Body</option>
+                        <option value="belly_pain">Belly Pain</option>
+                        <option value="abnormal_menstruation">Abnormal Menstruation</option>
+                        <option value="dischromic _patches">Dischromic Patches</option>
+                        <option value="watering_from_eyes">Watering from Eyes</option>
+                        <option value="increased_appetite">Increased Appetite</option>
+                        <option value="polyuria">Polyuria</option>
+                        <option value="family_history">Family History</option>
+                        <option value="mucoid_sputum">Mucoid Sputum</option>
+                        <option value="rusty_sputum">Rusty Sputum</option>
+                        <option value="lack_of_concentration">Lack of Concentration</option>
+                        <option value="visual_disturbances">Visual Disturbances</option>
+                        <option value="receiving_blood_transfusion">Receiving Blood Transfusion</option>
+                        <option value="receiving_unsterile_injections">Receiving Unsterile Injections</option>
+                        <option value="coma">Coma</option>
+                        <option value="stomach_bleeding">Stomach Bleeding</option>
+                        <option value="distention_of_abdomen">Distention of Abdomen</option>
+                        <option value="history_of_alcohol_consumption">History of Alcohol Consumption</option>
+                        <option value="fluid_overload.1">Fluid Overload</option>
+                        <option value="blood_in_sputum">Blood in Sputum</option>
+                        <option value="prominent_veins_on_calf">Prominent Veins on Calf</option>
+                        <option value="palpitations">Palpitations</option>
+                        <option value="painful_walking">Painful Walking</option>
+                        <option value="pus_filled_pimples">Pus Filled Pimples</option>
+                        <option value="blackheads">Blackheads</option>
+                        <option value="scurring">Scurring</option>
+                        <option value="skin_peeling">Skin Peeling</option>
+                        <option value="silver_like_dusting">Silver Like Dusting</option>
+                        <option value="small_dents_in_nails">Small Dents in Nails</option>
+                        <option value="inflammatory_nails">Inflammatory Nails</option>
+                        <option value="blister">Blister</option>
+                        <option value="red_sore_around_nose">Red Sore Around Nose</option>
+                        <option value="yellow_crust_ooze">Yellow Crust Ooze</option>
+                    </select>
+                </div>
+
+                <!-- Add Symptom Button -->
+                <button type="button" class="btn btn-primary" id="addSymptomBtn">
+                    <i class="fas fa-plus me-2"></i>Add Symptom
+                </button>
+
+                <!-- Selected Symptoms Display -->
+                <div class="selected-symptoms" id="selectedSymptoms">
+                    <p class="text-muted mb-0">No symptoms selected yet. Please add symptoms from the dropdown above.</p>
+                </div>
+
+                <!-- Hidden input for form submission -->
+                <input type="hidden" id="symptomsInput" name="symptoms" value="">
+
+                <!-- Speech Recognition -->
+                <div class="speech-recognition">
+                    <h5><i class="fas fa-microphone me-2"></i>Voice Input</h5>
+                    <p>You can also use voice recognition to add symptoms.</p>
+                    <button type="button" class="btn btn-success" id="startSpeechRecognition">
+                        <i class="fas fa-microphone me-2"></i>Start Speech Recognition
+                    </button>
+                    <div class="transcription" id="transcription">
+                        <p class="text-muted mb-0">Transcribed text will appear here...</p>
+                    </div>
+                </div>
+
+                <!-- Error/Success Messages -->
+                {% if message %}
+                <div class="error-message">
+                    <i class="fas fa-exclamation-triangle me-2"></i>{{ message }}
+                </div>
+                {% endif %}
+
+                <!-- Predict Button -->
+                <button type="submit" class="btn btn-danger btn-lg">
+                    <i class="fas fa-brain me-2"></i>Predict Disease
+                </button>
+            </form>
+        </div>
+
+        <!-- Results Section -->
+        {% if predicted_disease %}
+        <div class="results-container">
+            <h2 class="text-center mb-4"><i class="fas fa-chart-line me-2"></i>AI Prediction Results</h2>
+            <p class="text-center mb-4">Based on your symptoms, here are the detailed results:</p>
+            
+            <div class="text-center">
+                <a href="#" class="result-button" data-bs-toggle="modal" data-bs-target="#diseaseModal">
+                    <i class="fas fa-disease me-2"></i>Disease
+                </a>
+                <a href="#" class="result-button" data-bs-toggle="modal" data-bs-target="#descriptionModal">
+                    <i class="fas fa-info-circle me-2"></i>Description
+                </a>
+                <a href="#" class="result-button" data-bs-toggle="modal" data-bs-target="#precautionModal">
+                    <i class="fas fa-shield-alt me-2"></i>Precautions
+                </a>
+                <a href="#" class="result-button" data-bs-toggle="modal" data-bs-target="#medicationsModal">
+                    <i class="fas fa-pills me-2"></i>Medications
+                </a>
+                <a href="#" class="result-button" data-bs-toggle="modal" data-bs-target="#workoutsModal">
+                    <i class="fas fa-dumbbell me-2"></i>Workouts
+                </a>
+                <a href="#" class="result-button" data-bs-toggle="modal" data-bs-target="#dietsModal">
+                    <i class="fas fa-apple-alt me-2"></i>Diets
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Disease Modal -->
+    <div class="modal fade" id="diseaseModal" tabindex="-1" aria-labelledby="diseaseModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="diseaseModalLabel">
+                        <i class="fas fa-disease me-2"></i>Predicted Disease
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h4 class="text-center">{{ predicted_disease }}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Description Modal -->
+    <div class="modal fade" id="descriptionModal" tabindex="-1" aria-labelledby="descriptionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="descriptionModalLabel">
+                        <i class="fas fa-info-circle me-2"></i>Description
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>{{ dis_des }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Precaution Modal -->
+    <div class="modal fade" id="precautionModal" tabindex="-1" aria-labelledby="precautionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="precautionModalLabel">
+                        <i class="fas fa-shield-alt me-2"></i>Precautions
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        {% for i in my_precautions %}
+                            <li>{{ i }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Medications Modal -->
+    <div class="modal fade" id="medicationsModal" tabindex="-1" aria-labelledby="medicationsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="medicationsModalLabel">
+                        <i class="fas fa-pills me-2"></i>Medications
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        {% for i in medications %}
+                            <li>{{ i }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Workouts Modal -->
+    <div class="modal fade" id="workoutsModal" tabindex="-1" aria-labelledby="workoutsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="workoutsModalLabel">
+                        <i class="fas fa-dumbbell me-2"></i>Workouts
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        {% for i in workout %}
+                            <li>{{ i }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Diets Modal -->
+    <div class="modal fade" id="dietsModal" tabindex="-1" aria-labelledby="dietsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="dietsModalLabel">
+                        <i class="fas fa-apple-alt me-2"></i>Diets
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        {% for i in my_diet %}
+                            <li>{{ i }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    
+    <script>
+        // Symptom management
+        let selectedSymptoms = [];
+        const symptomDropdown = document.getElementById('symptomDropdown');
+        const addSymptomBtn = document.getElementById('addSymptomBtn');
+        const selectedSymptomsContainer = document.getElementById('selectedSymptoms');
+        const symptomsInput = document.getElementById('symptomsInput');
+
+        addSymptomBtn.addEventListener('click', function() {
+            const selectedValue = symptomDropdown.value;
+            const selectedText = symptomDropdown.options[symptomDropdown.selectedIndex].text;
+            
+            if (selectedValue && !selectedSymptoms.includes(selectedValue)) {
+                selectedSymptoms.push(selectedValue);
+                updateSymptomsDisplay();
+                symptomDropdown.value = '';
+            }
+        });
+
+        function updateSymptomsDisplay() {
+            if (selectedSymptoms.length === 0) {
+                selectedSymptomsContainer.innerHTML = '<p class="text-muted mb-0">No symptoms selected yet. Please add symptoms from the dropdown above.</p>';
+            } else {
+                selectedSymptomsContainer.innerHTML = selectedSymptoms.map((symptom, index) => {
+                    const symptomText = symptom.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                    return `
+                        <div class="symptom-tag">
+                            <i class="fas fa-tag"></i>
+                            ${symptomText}
+                            <button type="button" class="remove-symptom" onclick="removeSymptom(${index})">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            // Update hidden input for form submission
+            document.getElementById('symptomsInput').value = selectedSymptoms.join(',');
+        }
+
+        function removeSymptom(index) {
+            selectedSymptoms.splice(index, 1);
+            updateSymptomsDisplay();
+        }
+
+        // Speech recognition
+        const startSpeechRecognitionButton = document.getElementById('startSpeechRecognition');
+        const transcriptionDiv = document.getElementById('transcription');
+
+        startSpeechRecognitionButton.addEventListener('click', startSpeechRecognition);
+
+        function startSpeechRecognition() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+                recognition.lang = 'en-US';
+                recognition.continuous = false;
+                recognition.interimResults = false;
+
+                recognition.onstart = function() {
+                    transcriptionDiv.innerHTML = '<p class="text-info mb-0"><i class="fas fa-microphone me-2"></i>Listening... Please speak your symptoms.</p>';
+                    startSpeechRecognitionButton.disabled = true;
+                };
+
+                recognition.onresult = function(event) {
+                    const result = event.results[0][0].transcript;
+                    transcriptionDiv.innerHTML = `<p class="text-success mb-0"><i class="fas fa-check me-2"></i>Transcribed: "${result}"</p>`;
+                    
+                    // Try to match spoken symptoms with available symptoms
+                    const words = result.toLowerCase().split(' ');
+                    words.forEach(word => {
+                        const matchingSymptom = Array.from(symptomDropdown.options).find(option => 
+                            option.value && option.value.toLowerCase().includes(word) || 
+                            option.text.toLowerCase().includes(word)
+                        );
+                        if (matchingSymptom && !selectedSymptoms.includes(matchingSymptom.value)) {
+                            selectedSymptoms.push(matchingSymptom.value);
+                        }
+                    });
+                    updateSymptomsDisplay();
+                };
+
+                recognition.onerror = function(event) {
+                    transcriptionDiv.innerHTML = '<p class="text-danger mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Error: ' + event.error + '</p>';
+                };
+
+                recognition.onend = function() {
+                    startSpeechRecognitionButton.disabled = false;
+                };
+
+                recognition.start();
+            } else {
+                transcriptionDiv.innerHTML = '<p class="text-danger mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Speech recognition is not supported in this browser.</p>';
+            }
+        }
+    </script>
+</body>
+</html>

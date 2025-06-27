@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Development Team - Health Care Center</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+
+  <style>
+    * {
+        font-family: 'Inter', sans-serif;
+    }
+
+    body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        position: relative;
+    }
+
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    .navbar {
+        background: rgba(255, 255, 255, 0.1) !important;
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-brand {
+        font-weight: 600;
+        font-size: 1.5rem;
+        color: white !important;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .nav-link {
+        color: rgba(255, 255, 255, 0.9) !important;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .nav-link:hover {
+        color: white !important;
+        transform: translateY(-2px);
+    }
+
+    .main-title {
+        font-size: 3.5rem;
+        font-weight: 900;
+        color: white;
+        text-align: center;
+        margin: 3rem 0;
+        text-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        letter-spacing: -0.03em;
+    }
+
+    .team-card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        overflow: hidden;
+        transition: all 0.4s ease;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+    }
+
+    .team-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+    }
+
+    .team-card-header {
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        padding: 1.5rem;
+        font-weight: 600;
+        font-size: 1.1rem;
+        color: white;
+    }
+
+    .team-card-body {
+        padding: 2rem;
+        color: white;
+    }
+
+    .role-badge {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        display: inline-block;
+        margin-bottom: 1rem;
+    }
+
+    .contact-info {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 1rem;
+        margin-top: 1rem;
+    }
+
+    .contact-info a {
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .contact-info a:hover {
+        color: #ffd700;
+        transform: translateX(5px);
+    }
+
+    .myimg {
+        width: 50px;
+        height: 50px;
+        border: 2px solid rgba(255,255,255,0.3);
+        border-radius: 25px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+
+    .myimg:hover {
+        transform: scale(1.1);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img class="myimg me-2" src="{{ url_for('static', filename='img.png') }}" alt="Logo">
+                Health Center
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/developer">Developer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/blog">Blog</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Title -->
+    <h1 class="main-title">Development Team</h1>
+
+    <div class="container">
+        <div class="row">
+            <!-- Project Lead -->
+            <div class="col-lg-6">
+                <div class="team-card">
+                    <div class="team-card-header">
+                        <h4 class="mb-0"><i class="fas fa-crown me-2"></i>Project Lead & Full Stack Developer</h4>
+                    </div>
+                    <div class="team-card-body">
+                        <div class="role-badge">
+                            <i class="fas fa-star me-2"></i>Lead Developer
+                        </div>
+                        <h3>Ashish Kumar</h3>
+                        <p class="mb-3">Primary developer responsible for the entire Medicine Recommendation System. Expert in machine learning, web development, and system architecture.</p>
+                        <div class="contact-info">
+                            <p><i class="fas fa-envelope me-2"></i><a href="mailto:ashish.kumar1@sunstone.in">ashish.kumar1@sunstone.in</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Backend Developer -->
+            <div class="col-lg-6">
+                <div class="team-card">
+                    <div class="team-card-header">
+                        <h4 class="mb-0"><i class="fas fa-server me-2"></i>Backend Developer</h4>
+                    </div>
+                    <div class="team-card-body">
+                        <div class="role-badge">
+                            <i class="fas fa-code me-2"></i>Backend Specialist
+                        </div>
+                        <h3>Prakhar Mishra</h3>
+                        <p class="mb-3">Specialized in backend development, API design, and database management. Ensures robust server-side functionality and data processing.</p>
+                        <div class="contact-info">
+                            <p><i class="fas fa-envelope me-2"></i><a href="mailto:prakhar.mishra@sunstone.in">prakhar.mishra@sunstone.in</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Frontend Developer -->
+            <div class="col-lg-6">
+                <div class="team-card">
+                    <div class="team-card-header">
+                        <h4 class="mb-0"><i class="fas fa-palette me-2"></i>Frontend Developer</h4>
+                    </div>
+                    <div class="team-card-body">
+                        <div class="role-badge">
+                            <i class="fas fa-paint-brush me-2"></i>UI/UX Specialist
+                        </div>
+                        <h3>Rashika Jain</h3>
+                        <p class="mb-3">Focused on creating intuitive user interfaces and seamless user experiences. Expert in modern web technologies and responsive design.</p>
+                        <div class="contact-info">
+                            <p><i class="fas fa-envelope me-2"></i><a href="mailto:rashika.jain@sunstone.in">rashika.jain@sunstone.in</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Machine Learning Engineer -->
+            <div class="col-lg-6">
+                <div class="team-card">
+                    <div class="team-card-header">
+                        <h4 class="mb-0"><i class="fas fa-brain me-2"></i>Machine Learning Engineer</h4>
+                    </div>
+                    <div class="team-card-body">
+                        <div class="role-badge">
+                            <i class="fas fa-robot me-2"></i>ML Specialist
+                        </div>
+                        <h3>Abhishek Paswan</h3>
+                        <p class="mb-3">Specialized in machine learning algorithms, model training, and AI implementation. Ensures accurate disease prediction and system optimization.</p>
+                        <div class="contact-info">
+                            <p><i class="fas fa-envelope me-2"></i><a href="mailto:abhishek.paswan@sunstone.in">abhishek.paswan@sunstone.in</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project Description -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="team-card">
+                    <div class="team-card-header">
+                        <h4 class="mb-0"><i class="fas fa-info-circle me-2"></i>About Our Project</h4>
+                    </div>
+                    <div class="team-card-body">
+                        <p>Our Medicine Recommendation System represents a collaborative effort to bring cutting-edge AI technology to healthcare. This personalized medical recommendation system leverages machine learning to provide accurate disease predictions based on user symptoms.</p>
+                        <p>The system combines expertise in web development, machine learning, user experience design, and backend architecture to create a comprehensive healthcare solution that empowers users with knowledge about their health conditions.</p>
+                        <p>Built with modern technologies including Flask, scikit-learn, and advanced frontend frameworks, our system provides not only disease predictions but also comprehensive information including descriptions, precautions, medications, dietary advice, and workout recommendations.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</body>
+</html>

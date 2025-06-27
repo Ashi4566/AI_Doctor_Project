@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>About Us - Health Care Center</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+
+  <style>
+    * {
+        font-family: 'Inter', sans-serif;
+    }
+
+    body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        position: relative;
+    }
+
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    .navbar {
+        background: rgba(255, 255, 255, 0.1) !important;
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-brand {
+        font-weight: 600;
+        font-size: 1.5rem;
+        color: white !important;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .nav-link {
+        color: rgba(255, 255, 255, 0.9) !important;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .nav-link:hover {
+        color: white !important;
+        transform: translateY(-2px);
+    }
+
+    .main-title {
+        font-size: 3.5rem;
+        font-weight: 900;
+        color: white;
+        text-align: center;
+        margin: 3rem 0;
+        text-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        letter-spacing: -0.03em;
+    }
+
+    .about-container {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        padding: 3rem;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        margin: 2rem 0;
+        transition: all 0.3s ease;
+        color: white;
+    }
+
+    .about-container:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+    }
+
+    .section-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #ffd700;
+        margin: 2rem 0 1rem;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .vision-mission-card {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9));
+        border-radius: 20px;
+        padding: 2rem;
+        margin: 1rem 0;
+        color: white;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .vision-mission-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .feature-card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        padding: 2rem;
+        margin: 1rem 0;
+        color: white;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .feature-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        color: #4ecdc4;
+    }
+
+    .stats-section {
+        background: linear-gradient(135deg, rgba(76, 175, 80, 0.9), rgba(139, 195, 74, 0.9));
+        border-radius: 20px;
+        padding: 2rem;
+        margin: 2rem 0;
+        color: white;
+        text-align: center;
+    }
+
+    .stat-item {
+        margin: 1rem 0;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        display: block;
+    }
+
+    .stat-label {
+        font-size: 1.1rem;
+        opacity: 0.9;
+    }
+
+    .myimg {
+        width: 50px;
+        height: 50px;
+        border: 2px solid rgba(255,255,255,0.3);
+        border-radius: 25px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+
+    .myimg:hover {
+        transform: scale(1.1);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+
+    .interactive-btn {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        color: white;
+        transition: all 0.3s ease;
+        margin: 0.5rem;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .interactive-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+        color: white;
+    }
+  </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img class="myimg me-2" src="{{ url_for('static', filename='img.png') }}" alt="Logo">
+                Health Center
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/developer">Developer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/blog">Blog</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Title -->
+    <h1 class="main-title">About Us</h1>
+
+    <div class="container">
+        <!-- Welcome Section -->
+        <div class="about-container">
+            <div class="row">
+                <div class="col-md-8">
+                    <h2 class="section-title"><i class="fas fa-heartbeat me-2"></i>Welcome to Medical Health Center</h2>
+                    <p class="lead">Where health meets technology for a brighter, healthier future.</p>
+                    <p>We are a passionate team of healthcare professionals, data scientists, and technology enthusiasts who share a common goal: to make healthcare accessible, understandable, and personalized for you. With years of experience in both healthcare and cutting-edge technology, we've come together to create this platform as a testament to our commitment to your well-being.</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <i class="fas fa-hospital-user" style="font-size: 5rem; color: #4ecdc4;"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vision & Mission -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="vision-mission-card">
+                    <i class="fas fa-eye feature-icon"></i>
+                    <h3>Our Vision</h3>
+                    <p>We envision a world where access to healthcare information is not just a luxury but a fundamental right. Our journey began with a simple yet powerful idea: to empower individuals with the knowledge and tools they need to take control of their health.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="vision-mission-card">
+                    <i class="fas fa-bullseye feature-icon"></i>
+                    <h3>Our Mission</h3>
+                    <p>At this website, our mission is to provide you with a seamless and intuitive platform that leverages the power of artificial intelligence and machine learning. We want to assist you in identifying potential health concerns based on your reported symptoms.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- How We Do It -->
+        <div class="about-container">
+            <h2 class="section-title text-center"><i class="fas fa-cogs me-2"></i>How We Do It</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <i class="fas fa-brain feature-icon"></i>
+                        <h4>AI-Powered Analysis</h4>
+                        <p>Our platform utilizes a robust machine learning model trained on a vast dataset of symptoms and diseases.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <i class="fas fa-search feature-icon"></i>
+                        <h4>Accurate Predictions</h4>
+                        <p>By inputting your symptoms, our system generates accurate predictions about potential illnesses.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <i class="fas fa-info-circle feature-icon"></i>
+                        <h4>Comprehensive Information</h4>
+                        <p>We provide detailed information about each disease, including descriptions, precautions, and recommendations.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="stats-section">
+            <h2 class="text-center mb-4"><i class="fas fa-chart-bar me-2"></i>Our Impact</h2>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="stat-item">
+                        <span class="stat-number">50+</span>
+                        <span class="stat-label">Diseases Covered</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-item">
+                        <span class="stat-number">100+</span>
+                        <span class="stat-label">Symptoms Analyzed</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-item">
+                        <span class="stat-number">95%</span>
+                        <span class="stat-label">Accuracy Rate</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-item">
+                        <span class="stat-number">24/7</span>
+                        <span class="stat-label">Available</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Your Well-being Section -->
+        <div class="about-container">
+            <h2 class="section-title text-center"><i class="fas fa-shield-alt me-2"></i>Your Well-being, Our Priority</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <p>Your health is our top priority. We understand that navigating the complexities of healthcare can be daunting. That's why we've gone the extra mile to provide not only accurate predictions but also comprehensive information about each disease.</p>
+                    <p>You'll find descriptions, recommended precautions, medications, dietary advice, and workout tips to support your journey to better health.</p>
+                </div>
+                <div class="col-md-6">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-users me-2"></i>Join Us on this Journey</h4>
+                        <p>We invite you to explore our platform, engage with our educational content, and take control of your health journey. Together, we can revolutionize the way individuals access and understand healthcare information.</p>
+                        <a href="/" class="interactive-btn">
+                            <i class="fas fa-play me-2"></i>Get Started
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thank You Section -->
+        <div class="about-container text-center">
+            <i class="fas fa-heart" style="font-size: 3rem; color: #ff6b6b; margin-bottom: 1rem;"></i>
+            <h3>Thank You for Choosing Health Center</h3>
+            <p class="lead">We are here to empower you with knowledge, support, and a brighter, healthier future.</p>
+            
+            <!-- Interactive Buttons -->
+            <div class="mt-4">
+                <a href="/contact" class="interactive-btn">
+                    <i class="fas fa-envelope me-2"></i>Contact Us
+                </a>
+                <a href="/developer" class="interactive-btn">
+                    <i class="fas fa-users me-2"></i>Meet Our Team
+                </a>
+                <a href="/blog" class="interactive-btn">
+                    <i class="fas fa-newspaper me-2"></i>Read Our Blog
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</body>
+</html>

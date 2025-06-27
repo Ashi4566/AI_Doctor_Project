@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Blog - Health Care Center</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+
+  <style>
+    * {
+        font-family: 'Inter', sans-serif;
+    }
+
+    body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        position: relative;
+    }
+
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    .navbar {
+        background: rgba(255, 255, 255, 0.1) !important;
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-brand {
+        font-weight: 600;
+        font-size: 1.5rem;
+        color: white !important;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .nav-link {
+        color: rgba(255, 255, 255, 0.9) !important;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .nav-link:hover {
+        color: white !important;
+        transform: translateY(-2px);
+    }
+
+    .main-title {
+        font-size: 3.5rem;
+        font-weight: 900;
+        color: white;
+        text-align: center;
+        margin: 3rem 0;
+        text-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        letter-spacing: -0.03em;
+    }
+
+    .blog-container {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        padding: 3rem;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        margin: 2rem 0;
+        transition: all 0.3s ease;
+        color: white;
+    }
+
+    .blog-container:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+    }
+
+    .blog-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: white;
+        text-align: center;
+        margin-bottom: 2rem;
+        text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #ffd700;
+        margin: 2rem 0 1rem;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .feature-list {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+    }
+
+    .feature-list li {
+        margin-bottom: 0.5rem;
+        padding-left: 1rem;
+    }
+
+    .feature-list strong {
+        color: #ffd700;
+    }
+
+    .myimg {
+        width: 50px;
+        height: 50px;
+        border: 2px solid rgba(255,255,255,0.3);
+        border-radius: 25px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+
+    .myimg:hover {
+        transform: scale(1.1);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+
+    .interactive-btn {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        color: white;
+        transition: all 0.3s ease;
+        margin: 0.5rem;
+        cursor: pointer;
+    }
+
+    .interactive-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+        color: white;
+    }
+
+    .highlight-box {
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 165, 0, 0.2));
+        border: 1px solid rgba(255, 215, 0, 0.4);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        text-align: center;
+    }
+
+    .tech-stack {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin: 1rem 0;
+    }
+
+    .tech-badge {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        padding: 0.5rem 1rem;
+        color: white;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img class="myimg me-2" src="{{ url_for('static', filename='img.png') }}" alt="Logo">
+                Health Center
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/developer">Developer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/blog">Blog</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Title -->
+    <h1 class="main-title">Technology Blog</h1>
+
+    <div class="container">
+        <div class="blog-container">
+            <h2 class="blog-title">Building a Symptom-Based Disease Diagnosis Web App with Flask and Machine Learning</h2>
+            
+            <div class="highlight-box">
+                <h4><i class="fas fa-lightbulb me-2"></i>Project Overview</h4>
+                <p>In the age of technology and information, access to accurate and timely healthcare is more critical than ever. With the increasing importance of remote healthcare solutions, we embarked on a journey to develop a symptom-based disease diagnosis web application.</p>
+            </div>
+
+            <h3 class="section-title"><i class="fas fa-exclamation-triangle me-2"></i>The Problem</h3>
+            <p>The project began with recognizing a common issue: people often experience symptoms and want quick answers about their health concerns. It can be challenging to differentiate between various diseases, especially when symptoms overlap. Our goal was to provide a convenient solution for users to input their symptoms and receive potential diagnoses.</p>
+
+            <h3 class="section-title"><i class="fas fa-cogs me-2"></i>The Solution</h3>
+            <p>We developed a web app that allows users to enter a list of symptoms they are experiencing. The app then uses a pre-trained Decision Tree Classifier model to predict the most likely disease based on the provided symptoms. Here's how it works:</p>
+
+            <div class="feature-list">
+                <ol>
+                    <li><strong>Symptom Input:</strong> Users enter their symptoms through a user-friendly interface. The web app supports a wide range of symptoms, making it versatile for different scenarios.</li>
+                    <li><strong>Machine Learning Model:</strong> We trained a Decision Tree Classifier using a dataset containing symptoms and corresponding diseases. The model is capable of predicting diseases based on input symptoms.</li>
+                    <li><strong>Prediction:</strong> The app uses the model to predict the most likely disease, providing users with instant information about potential health concerns.</li>
+                    <li><strong>Additional Information:</strong> To enhance user experience, the app also provides additional information about the predicted disease. This includes a description of the disease, recommended precautions, medications, dietary advice, and workout tips.</li>
+                </ol>
+            </div>
+
+            <h3 class="section-title"><i class="fas fa-star me-2"></i>Key Features</h3>
+            <div class="feature-list">
+                <ul>
+                    <li><strong>User-Friendly Interface:</strong> The web app boasts an intuitive and easy-to-navigate interface, ensuring that users can input their symptoms without any hassle.</li>
+                    <li><strong>Accurate Predictions:</strong> Leveraging machine learning, our model provides accurate disease predictions based on the symptoms provided by the user.</li>
+                    <li><strong>Comprehensive Information:</strong> In addition to predictions, the app offers comprehensive information about the predicted disease, including descriptions, precautions, medications, diet recommendations, and workout tips.</li>
+                    <li><strong>Educational Content:</strong> To empower users with knowledge, the app includes informative blog posts about various health topics.</li>
+                </ul>
+            </div>
+
+            <h3 class="section-title"><i class="fas fa-code me-2"></i>Technology Stack</h3>
+            <div class="tech-stack">
+                <span class="tech-badge">Flask</span>
+                <span class="tech-badge">Python</span>
+                <span class="tech-badge">scikit-learn</span>
+                <span class="tech-badge">Bootstrap</span>
+                <span class="tech-badge">HTML/CSS</span>
+                <span class="tech-badge">JavaScript</span>
+                <span class="tech-badge">Machine Learning</span>
+                <span class="tech-badge">Decision Trees</span>
+            </div>
+
+            <h3 class="section-title"><i class="fas fa-chart-line me-2"></i>Conclusion</h3>
+            <p>Our Symptom-Based Disease Diagnosis Web App brings the power of machine learning and healthcare information to the fingertips of users. It serves as a valuable resource for individuals looking to gain insights into their health conditions quickly and conveniently. By combining technology and healthcare, we aim to make healthcare more accessible and user-centric.</p>
+            
+            <p>In an era where remote healthcare solutions are gaining prominence, this project represents a significant step forward in providing accessible and reliable healthcare information to the masses. We hope that this project will contribute to better health awareness and ultimately improve the well-being of individuals worldwide.</p>
+
+            <!-- Interactive Elements -->
+            <div class="text-center mt-4">
+                <button class="interactive-btn" onclick="window.print()">
+                    <i class="fas fa-print me-2"></i>Print Article
+                </button>
+                <button class="interactive-btn" onclick="shareArticle()">
+                    <i class="fas fa-share me-2"></i>Share Article
+                </button>
+                <button class="interactive-btn" onclick="scrollToTop()">
+                    <i class="fas fa-arrow-up me-2"></i>Back to Top
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    
+    <script>
+        function shareArticle() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Medicine Recommendation System - Technology Blog',
+                    text: 'Building a Symptom-Based Disease Diagnosis Web App with Flask and Machine Learning',
+                    url: window.location.href
+                });
+            } else {
+                const text = 'Check out this amazing Medicine Recommendation System: ' + window.location.href;
+                navigator.clipboard.writeText(text).then(() => {
+                    alert('Article link copied to clipboard!');
+                });
+            }
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
