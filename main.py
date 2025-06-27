@@ -414,12 +414,9 @@ def list_routes():
         output.append(line)
     return '<pre>' + '\n'.join(output) + '</pre>'
 
-# --- Initialize DB before the first request ---
-# This ensures the database and tables are created when the app starts.
-@app.before_first_request
-def setup_database():
-    init_db()
 
+# Initialize the database when the app starts
+init_db()
 
 # <<< NOTE FOR DEPLOYMENT >>>
 # The following block is for running the app on your local machine.
